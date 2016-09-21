@@ -1,11 +1,8 @@
-# from PIL import Image
-# from scipy.misc import imsave
 import os
 import shutil
 import subprocess
 import time
 from PIL import Image
-from scipy.misc import imsave
 from pydub import AudioSegment
 from pydub.utils import audioop, ratio_to_db
 
