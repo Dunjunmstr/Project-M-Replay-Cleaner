@@ -57,9 +57,9 @@ def makeMonochrome(picture):
         for j in range(img.size[1]):
             imageTuple = pixels[i,j]
             if ((imageTuple[0] +imageTuple[1]+imageTuple[2])/3 > 128):
-                newpixels[i,j] = (255, 255, 255) # set the colour accordingly
+                newpixels[i,j] = (255, 255, 255)
             else:
-                newpixels[i,j] = (0, 0, 0) # set the colour accordingly
+                newpixels[i,j] = (0, 0, 0)
     img.save("Stencils/" + picture)
 
 def compareBoxes(corners, initial, other): #Returns true if bounding boxes are the same in content
@@ -121,7 +121,7 @@ def mushVideo(framesDirectory, matchName, startFrame, endFrame, ffmpegDirectory)
             else:
                 if (i != startFrame):
                     previousNotFound = True
-                    currentStencilIndex = (currentStencilIndex - 1) % 6 #To be on the safe side, I guess. Usually 6 has trouble with detection, but best not to risk it.
+                    currentStencilIndex = (currentStencilIndex - 1) % 6
                     imageDurations.append(1)
         else:
             print "We found a duplicate image: Image number ", i
@@ -188,7 +188,10 @@ def getSegment(ourFile, startMS, endMS):
     
 
 def deleteStutter(wavFile, actualLength, ffmpegDirectory, slop = 1, actualSlop = 1): #Match start and end are in ms
-#NOTE: Slop < 1000 by necessity, actualSlop skips miliseconds
+    #NOTE: Slop < 1000 by necessity, actualSlop skips miliseconds. Slop refers to the sloppiness of the sampling rate.
+    #In other words, slop refers to how sloppy the program is; the higher the value, the worse the audio compression.
+    #The runtime scales inversely with the slop value though.
+    
     #This will work as follows: First we take a segment of audio, and go through each sample. We find the longest
     #run of positives/negatives. For each such run, append only the first and last millisecond.
     AudioSegment.converter = ffmpegDirectory + "ffmpeg.exe"
@@ -470,11 +473,6 @@ def main(matchName, matchFile, segmentStart, segmentEnd, matchStart, matchEnd, f
     wavFile = workFolder + matchName+'middle.wav'
     stutterlessAudio = deleteStutter(wavFile, actualLength, ffmpegDirectory, slop, actualSlop)
     stutterlessAudio.export(workFolder + matchName + "audio.wav", format="wav");
-    #Make video from matchStart to matchEnd into PNGs, keep a counter
-    #Make video of 0 to matchStart and totalLength to matchEnd
-    # matchVideo = mushVideo(frames)
-    #add 1st video to matchVideo to end video
-    #Slap the wav file onto the mp4, export it
 
     #Now we just have to combine the head, middle, and tail, and we're done.
     combineFrames(matchName, ffmpegDirectory, workFolder)
