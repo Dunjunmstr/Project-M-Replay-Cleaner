@@ -14,7 +14,7 @@ To do:
 
 
 Time spent: 7-2-15 to 7-9-15 (Most of this time was spent wrangling with ffmpeg)
-Dependencies: PIL, SciPy, Pydub
+Dependencies: PIL, Pydub
 
 Note: This project was never intended for the eyes of the general public. 90% of the code has not been edited for viewability (only a few questionable lines of comments and dead code were removed); please tread at your own risk.
 
